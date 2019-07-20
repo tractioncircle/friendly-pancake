@@ -8,7 +8,7 @@ namespace netmonitor
 {
     class Program
     {
-        private const string host = "10.8.8.8";
+        private const string host = "8.8.8.8";
         private const int timeout = 1024;
 
         private const string outputpath = "pinglog.csv";
