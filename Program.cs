@@ -8,12 +8,15 @@ namespace netmonitor
 {
     class Program
     {
+        private const string host = "10.8.8.8";
+        private const int timeout = 1024;
+
+        private const string outputpath = "pinglog.csv";
+        private const string errorpath = "pingerror.csv";
+        private const int intervalInSeconds = 15;
+
         static void Main(string[] args)
         {
-            var host = "8.8.8.8";
-            var timeout = 1024;
-            var outputpath = "pinglog.csv";
-            var intervalInSeconds = 15;
 
             while(true)
             {
@@ -47,6 +50,7 @@ namespace netmonitor
 
                 if(reply.Status != IPStatus.Success)
                 {
+                    WriteError(errorpath, output);
                     Log($"ERROR - {reply.Status}");
                 }
             }
@@ -67,6 +71,15 @@ namespace netmonitor
                 writer.WriteLine($"{data.TimeStamp},{data.Roundtrip},{data.Status}");
             }
         }
+
+        public static void WriteError(string errorpath, Data data)
+        {
+            using (var writer = File.AppendText(errorpath))
+            {
+                writer.WriteLine($"{data.TimeStamp},{data.Roundtrip},{data.Status}");
+            }
+        }
+
 
         public static void Log(string message)
         {
